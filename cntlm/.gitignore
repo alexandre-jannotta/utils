@@ -4,6 +4,7 @@ shortcuts/*
 !shortcuts/test.lnk
 
 config-source/*
+!config-source/.keep
 
 config-target/*
 !config-target/none.ini
