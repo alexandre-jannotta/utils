@@ -1,0 +1,9 @@
+shortcuts/*
+!shortcuts/none.lnk
+!shortcuts/run.lnk
+!shortcuts/test.lnk
+
+config-source/*
+
+config-target/*
+!config-target/none.ini
