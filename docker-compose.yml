@@ -1,0 +1,79 @@
+version: '3'
+
+networks:
+  postgres:
+  mongo:
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+  mongo-data:
+  mongo-config:
+
+services:
+  keycloak:
+    container_name: keycloak
+    image: jboss/keycloak
+    ports:
+      - "5080:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube
+    ports:
+      - "9000:9000"
+  nexus:
+    container_name: nexus
+    image: sonatype/nexus3
+    ports:
+      - "8081:8081"
+  postgres:
+    container_name: postgres
+    image: postgres
+    networks:
+      - postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    networks:
+      - postgres
+    ports:
+      - "5480:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@nowhere.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+  mongo:
+    container_name: mongo
+    image: mongo
+    networks:
+      - mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+  mexpress:
+    container_name: mexpress
+    image: mongo-express
+    networks:
+      - mongo
+    ports:
+      - "27081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+  plantuml:
+    container_name: plantuml
+    image: plantuml/plantuml-server
+    ports:
+      - "8080:8080"
