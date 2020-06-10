@@ -5,6 +5,11 @@ function prompt {
 	"$currentDirectory> "
 }
 
+function Set-Env($Name, $Value) {
+	New-Item env:\$Name -Value $Value -Force
+	[environment]::setEnvironmentVariable($Name, $Value, 'User')
+}
+
 # Ssl
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -23,4 +28,9 @@ else {
 
 Set-PSReadlineOption -BellStyle None
 
-Set-Location $env:DEV
+#Set-Location $env:DEV
+#$env:YARN_BIN = yarn global bin
+#$env:Path = "$env:Path;$env:YARN_BIN"
+
+Set-Alias -Name 'dc' -Value 'docker-compose'
+Set-Alias -Name 'd' -Value 'docker'
