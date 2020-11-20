@@ -10,6 +10,35 @@ function Set-Env($Name, $Value) {
 	[environment]::setEnvironmentVariable($Name, $Value, 'User')
 }
 
+function gssh($Name) {
+	if (!$Name) {
+		Write-Output 'Google SSH configuration...'
+		gcloud compute config-ssh
+		(Get-Content '~\.ssh\config').replace('HostName', "User ajannotta`n    HostName") | Set-Content '~\.ssh\config'
+	} else {
+		ssh "$Name.europe-west1-b.ajannotta-labs"
+	}
+}
+
+function venv($Path) {
+	if (!$Path) {
+		venv('.venv')
+	} else {
+		Write-Output "python -m venv $Path"
+		python -m venv $Path
+	}
+}
+
+function activate($Path) {
+	if (!$Path) {
+		activate('.venv')
+	} else {
+		# source "$Path/bin/activate"
+		Write-Output "$Path\Scripts\activate"
+		& "$Path\Scripts\activate"
+	}
+}
+
 # Ssl
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
