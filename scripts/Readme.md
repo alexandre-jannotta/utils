@@ -2,4 +2,7 @@
 Usefull docker containers
 
 # Profile
-Profile file located in `$home\Documents\WindowsPowerShell`
+```PowerShell
+New-Item -ItemType Directory (Split-Path $profile)
+New-Item -Path $profile -ItemType SymbolicLink -Value '.\Microsoft.PowerShell_profile.ps1'
+```
