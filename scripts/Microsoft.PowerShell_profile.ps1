@@ -46,20 +46,9 @@ function activate($Path) {
 $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
 $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 
-# Proxy
-if ($env:HTTP_PROXY) {
-	Write-Host 'Proxy'
-	[net.webrequest]::defaultwebproxy.credentials = [net.credentialcache]::defaultcredentials
-}
-else {
-	Write-Host 'No proxy'
-}
-
 Set-PSReadlineOption -BellStyle None
-
-#Set-Location $env:DEV
-#$env:YARN_BIN = yarn global bin
-#$env:Path = "$env:Path;$env:YARN_BIN"
 
 Set-Alias -Name 'dc' -Value 'docker-compose'
 Set-Alias -Name 'd' -Value 'docker'
+Set-Alias -Name 'gcl' -Value 'gcloud'
+Set-Alias -Name 'gcp' -Value 'gcloud'
