@@ -1,8 +1,23 @@
+$prefix = 'Microsoft.PowerShell.Core\FileSystem::\\wsl$\Ubuntu'
+$dev = '\\wsl$\Ubuntu\home\wlmitch\dev'
+
 function prompt {
-	$location = Get-Location
+	[string] $location = Get-Location
+	if ($location.StartsWith($prefix)) {
+		$location = $location.Substring($prefix.Length).Replace('\', '/')
+		$dev = 'C:\dev'
+	} else {
+		$dev = '\\wsl$\Ubuntu\home\wlmitch\dev'
+	}
 	$currentDirectory = Split-Path ($location) -Leaf
+
 	$Host.UI.RawUI.WindowTitle = $location
 	"$currentDirectory> "
+}
+
+function dev {
+	Write-Output "Moving to: $dev"
+	Set-Location $dev
 }
 
 function Set-Env($Name, $Value) {
@@ -14,7 +29,7 @@ function gssh($Name) {
 	if (!$Name) {
 		Write-Output 'Google SSH configuration...'
 		gcloud compute config-ssh
-		(Get-Content '~\.ssh\config').replace('HostName', "User ajannotta`n    HostName") | Set-Content '~\.ssh\config'
+		(Get-Content '~\.ssh\config').replace('HostName', "User ajannotta`n    ForwardAgent=yes`n    HostName") | Set-Content '~\.ssh\config'
 	} else {
 		ssh "$Name.europe-west1-b.ajannotta-labs"
 	}
