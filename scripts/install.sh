@@ -21,7 +21,13 @@ sudo apt update
 sudo apt install -y nodejs
 
 # Python
-sudo apt install -y python3 python3-pip
+sudo apt install -y python3 python3-pip pipenv
+# pyenv
+sudo apt install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+curl https://pyenv.run | bash
+pyenv install 3.9.2
+pyenv global 3.9.2
+pip install --upgrade pip pipenv
 
 # GCloud
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -86,7 +92,16 @@ wget https://release.gitkraken.com/linux/gitkraken-amd64.deb
 sudo dpkg -i ./gitkraken-amd64.deb
 sudo apt-get install -f
 
-# snap
-sudo apt update && sudo apt install -yqq daemonize dbus-user-session fontconfig
-sudo daemonize /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target
-exec sudo nsenter -t $(pidof systemd) -a su - $LOGNAME
+# help
+curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+sudo apt-get install apt-transport-https --yes
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+
+
+# Edit the sudoers with the visudo command
+sudo visudo
+
+# Change the %sudo group to be password-less
+%sudo   ALL=(ALL:ALL) NOPASSWD: ALL
